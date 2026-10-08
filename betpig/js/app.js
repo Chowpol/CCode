@@ -48,7 +48,7 @@
     return `<header class="topbar">
       <div class="brand">
         <button class="icon-btn" aria-label="Open menu" data-act="drawer">☰</button>
-        <a href="#/" class="brand" style="gap:8px" aria-label="BetPig home">${BP.icon.logo}<span class="wordmark">BetPig</span></a>
+        <a href="#/" class="brand" style="gap:8px" aria-label="BetPig home">${BP.icon.logo}<span class="wordmark" aria-label="BetPig">BET<span class="pig">PIG</span></span></a>
       </div>
       <div class="actions">
         <a class="results-pill" href="#/results" aria-label="Piggy's Picks results: ${r.w} won, ${r.l} lost">RESULTS <span class="score">${r.w}</span> – ${r.l} ›</a>
@@ -74,7 +74,7 @@
       l.soon ? `<button class="soon" data-act="toast" data-arg="${e(l.soon)}">${e(l.label)}</button>` : `<a href="${l.href}" data-act="close-ui">${e(l.label)}</a>`).join('')}</div>`;
     return `<div class="scrim drawer-scrim" data-act="close-ui" data-self="1">
       <nav class="drawer" aria-label="Site map">
-        <div class="row"><span class="brand">${BP.icon.logo}<span class="wordmark">BetPig</span></span><span class="spacer"></span><button class="icon-btn" aria-label="Close menu" data-act="close-ui">${BP.icon.close}</button></div>
+        <div class="row"><span class="brand">${BP.icon.logo}<span class="wordmark" aria-label="BetPig">BET<span class="pig">PIG</span></span></span><span class="spacer"></span><button class="icon-btn" aria-label="Close menu" data-act="close-ui">${BP.icon.close}</button></div>
         ${g('TOOLS', 'Interactive research', [
           { label: 'Shot Lab / Shot Explorer', href: '#/tools/shot-lab' },
           { label: 'Alt Line Explorer', href: '#/tools/alt-line' },

@@ -28,7 +28,7 @@ Every screen also has the 18+ strip, the reserved messaging slot, and separate h
 ## Notes
 
 - All players, prices and records are **fictional sample data** (`js/data.js`). "Now" is fixed at Thu 1 Oct 2026, 8:10am AEST, so timestamps line up with the storyboard.
-- Design tokens (lime `#c6ff4a`, surfaces, borders, type scale) come from the Figma frames. The BetPig pig logo is a placeholder SVG because Figma image assets couldn't be downloaded from this environment. Swap in the real asset at `BP.icon.logo` in `js/core.js`.
+- Design tokens (lime `#c6ff4a`, surfaces, borders, type scale) come from the Figma frames. The BetPig logo (pig mark `#9EFA71`, wordmark BET white / PIG `#C4FF8C`) is an SVG redraw of the brand logo, at `BP.icon.logo` in `js/core.js`.
 - Panels marked "to design" in the storyboard (Replay, Slide the line, My bookmakers, Recorded results, Inside the Pick) are implemented here as proposals.
 
 ## Structure
