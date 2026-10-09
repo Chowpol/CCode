@@ -1,6 +1,6 @@
 # Hero video — Shot Explorer 3D
 
-A looping 12s, 520×620 (rendered @2x) motion piece for the waitlist hero's right column:
+A looping 12s motion piece (portrait 520×620 and landscape 800×500, rendered @2x) for the waitlist hero's right column:
 a 3D half-court that swings into view while ~180 illustrative shots arc into the rim,
 leaving lime (made) and ring (missed) markers plus a live FG% tally.
 
@@ -8,7 +8,9 @@ leaving lime (made) and ring (missed) markers plus a live FG% tally.
 - `render.mjs`: captures every frame with Playwright and encodes the outputs into `out/`.
 - `out/hero-shot-explorer.{mp4,webm}`: web video. `.gif`: Figma-compatible. `-poster.jpg`: first paint.
 
-Re-render: `node hero-video/render.mjs` (needs `playwright` and `ffmpeg`).
+Re-render (needs `playwright` and `ffmpeg`):
+- portrait: `node hero-video/render.mjs`
+- landscape: `node hero-video/render.mjs 30 1600 1000 -landscape` (writes `hero-shot-explorer-landscape.*`)
 
 ## Embed in the hero
 
