@@ -11,6 +11,7 @@ leaving lime (made) and ring (missed) markers plus a live FG% tally.
 Re-render (needs `playwright` and `ffmpeg`):
 - portrait: `node hero-video/render.mjs`
 - landscape: `node hero-video/render.mjs 30 1600 1000 -landscape` (writes `hero-shot-explorer-landscape.*`)
+- hero background: `node hero-video/render.mjs 30 1920 1050 -bg bg` (no baked-in UI, court right of the copy; writes `hero-shot-explorer-bg.*`)
 
 ## Embed in the hero
 
@@ -23,3 +24,10 @@ Re-render (needs `playwright` and `ffmpeg`):
 ```
 
 The video background is `#0b0f0d`, the same as the page, so it blends without a frame.
+
+## Full-bleed hero (video as background)
+
+`hero-landscape.html` is the waitlist hero with `hero-shot-explorer-bg` playing behind the copy.
+The player card, live tally and court controls are real HTML over the video, and the tally
+follows the video's playback. Scrims keep the copy readable on the left, and the layout stacks on mobile.
+Matches Figma frame "Waitlist B · Video hero — Desktop (1440)".

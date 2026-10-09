@@ -20,6 +20,8 @@
   // ?w=&h= set the render size in device pixels (default: 1040x1240 portrait hero slot)
   const params = new URLSearchParams(location.search);
   const W = Number(params.get('w')) || 1040, H = Number(params.get('h')) || 1240;
+  // ?bg: background mode for a full-bleed hero — no baked-in UI, court pushed right of the copy
+  const BG_MODE = params.has('bg');
   const DURATION = 12;           // seconds, loops seamlessly
   const LIME = [166, 243, 107];  // #A6F36B
   const BG = '#0b0f0d';
@@ -107,8 +109,8 @@
       pitch: 0.70 - 0.2 * (1 - k),
       dist: 74 - 8 * k,
       target: [0, 4.5, 22.5],
-      focal: Math.min(W * 0.923, H * 0.84),
-      cx: W / 2, cy: H * (W > H ? 0.5 : 0.55),
+      focal: BG_MODE ? H * 0.86 : Math.min(W * 0.923, H * 0.84),
+      cx: W * (BG_MODE ? 0.72 : 0.5), cy: H * (BG_MODE ? 0.5 : W > H ? 0.5 : 0.55),
     };
   };
   const makeProj = (cam) => {
@@ -248,7 +250,7 @@
 
     ctx.fillStyle = BG; ctx.fillRect(0, 0, W, H);
     // ambient glow behind the court
-    const g = ctx.createRadialGradient(W / 2, H * 0.5, 0, W / 2, H * 0.5, W * 0.75);
+    const g = ctx.createRadialGradient(cam.cx, H * 0.5, 0, cam.cx, H * 0.5, Math.min(W, H * 1.2) * 0.75);
     g.addColorStop(0, 'rgba(110,190,80,0.10)'); g.addColorStop(1, 'rgba(110,190,80,0)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 
@@ -314,7 +316,8 @@
     ctx.restore();
 
     drawHoop(P, sceneA, flash * dataA);
-    drawUI(t, made, taken, sceneA * dataA + (1 - dataA) * 0.999 * sceneA);
+    if (!BG_MODE) drawUI(t, made, taken, sceneA * dataA + (1 - dataA) * 0.999 * sceneA);
+    return { made, taken };
   }
 
   window.HERO = { render, DURATION, W, H };

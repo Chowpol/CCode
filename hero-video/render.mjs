@@ -2,6 +2,7 @@
 // Usage: node hero-video/render.mjs [fps] [width height suffix]   (requires playwright + ffmpeg)
 //   portrait (default): node hero-video/render.mjs
 //   landscape:          node hero-video/render.mjs 30 1600 1000 -landscape
+//   hero background:    node hero-video/render.mjs 30 1920 1050 -bg bg
 import { chromium } from 'playwright';
 import { mkdtempSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -19,7 +20,7 @@ const frames = mkdtempSync(join(tmpdir(), 'hero-frames-'));
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: w / 2, height: h / 2 } });
-await page.goto(pathToFileURL(join(here, 'shot-explorer.html')).href + `?capture&w=${w}&h=${h}`);
+await page.goto(pathToFileURL(join(here, 'shot-explorer.html')).href + `?capture&w=${w}&h=${h}${process.argv[6] === 'bg' ? '&bg' : ''}`);
 await page.evaluate(() => document.fonts.ready);
 const duration = await page.evaluate(() => window.HERO.DURATION);
 const total = Math.round(duration * fps);
