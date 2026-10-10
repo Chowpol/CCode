@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · OraLux Clinical</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Tokens sampled from the "Dashboard · Dentist · Desktop 1440" frame */
+  :root {
+    --forest-900: #082d2e;   /* sidebar */
+    --forest-800: #0b3b3c;   /* "In chair" card, dark bars */
+    --forest-700: #0f4542;   /* active nav item */
+    --mint-500:   #35c2a8;   /* logo, primary action */
+    --mint-600:   #22a88f;
+    --mint-100:   #e3f6f1;
+    --teal-label: #208073;
+    --canvas:     #f2f6f6;   /* app background */
+    --surface:    #ffffff;
+    --border:     #e2eaea;
+    --ink:        #0f2f2f;
+    --ink-2:      #4b6464;
+    --ink-3:      #8aa0a0;
+    --danger:     #d64545;
+    --radius:     12px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    min-height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    background: var(--surface);
+  }
+
+  /* ---------- Left: form ---------- */
+  .form-side {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 48px;
+    background: var(--surface);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .brand-mark {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: var(--mint-500); color: var(--forest-900);
+    display: grid; place-items: center; font-weight: 800; font-size: 17px;
+  }
+  .brand-name { font-weight: 700; font-size: 17px; line-height: 1.1; }
+  .brand-sub { font-size: 10px; font-weight: 700; letter-spacing: .14em; color: var(--teal-label); }
+
+  .form-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 0; }
+  .form-card { width: 100%; max-width: 380px; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--mint-100); color: var(--teal-label);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  }
+  .eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--mint-500); }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -.01em; margin: 16px 0 6px; }
+  .lede { margin: 0 0 28px; color: var(--ink-2); font-size: 14px; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .input {
+    position: relative; display: flex; align-items: center;
+    border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .input:focus-within { border-color: var(--mint-500); box-shadow: 0 0 0 4px rgba(53,194,168,.18); }
+  .input.invalid { border-color: var(--danger); box-shadow: 0 0 0 4px rgba(214,69,69,.12); }
+  .input svg { flex: none; width: 18px; height: 18px; margin-left: 14px; color: var(--ink-3); }
+  .input input {
+    flex: 1; min-width: 0; border: 0; outline: 0; background: transparent;
+    font: inherit; font-size: 14px; color: var(--ink); padding: 13px 12px;
+  }
+  .input input::placeholder { color: var(--ink-3); }
+  .toggle-pw {
+    border: 0; background: none; cursor: pointer; padding: 0 14px; height: 44px;
+    color: var(--ink-2); font: inherit; font-size: 12px; font-weight: 600;
+  }
+  .toggle-pw:hover { color: var(--ink); }
+  .error { display: none; margin-top: 6px; font-size: 12px; color: var(--danger); }
+  .field.has-error .error { display: block; }
+
+  .row { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 24px; font-size: 13px; }
+  .check { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); cursor: pointer; }
+  .check input { width: 16px; height: 16px; accent-color: var(--forest-800); margin: 0; }
+  .link { color: var(--teal-label); font-weight: 600; text-decoration: none; }
+  .link:hover { text-decoration: underline; }
+
+  .btn {
+    width: 100%; height: 48px; border: 0; border-radius: 10px; cursor: pointer;
+    font: inherit; font-size: 15px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background .15s, transform .05s;
+  }
+  .btn-primary { background: var(--forest-800); color: #fff; }
+  .btn-primary:hover { background: var(--forest-700); }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-primary:focus-visible { outline: 3px solid var(--mint-500); outline-offset: 2px; }
+  .btn[disabled] { opacity: .75; cursor: progress; }
+  .spinner {
+    display: none; width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; animation: spin .7s linear infinite;
+  }
+  .btn.loading .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .alert {
+    display: none; margin-bottom: 18px; padding: 10px 12px; border-radius: 10px;
+    background: #fdecec; color: #a32f2f; font-size: 13px; font-weight: 500;
+  }
+  .alert.show { display: block; }
+
+  .help { margin-top: 24px; text-align: center; font-size: 13px; color: var(--ink-2); }
+
+  .form-foot { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+  .form-foot a { color: inherit; text-decoration: none; }
+  .form-foot a:hover { color: var(--ink-2); }
+
+  /* ---------- Right: brand showcase ---------- */
+  .showcase {
+    position: relative; overflow: hidden;
+    margin: 16px 16px 16px 0; border-radius: 20px;
+    background:
+      radial-gradient(900px 500px at 110% -10%, rgba(53,194,168,.28), transparent 60%),
+      radial-gradient(600px 400px at -20% 110%, rgba(53,194,168,.16), transparent 60%),
+      var(--forest-900);
+    color: #fff;
+    padding: 56px 56px 0;
+    display: flex; flex-direction: column;
+  }
+  .showcase::after { /* subtle dot grid */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 18px 18px;
+    mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+  }
+  .showcase > * { position: relative; z-index: 1; }
+  .showcase .eyebrow { align-self: flex-start; background: rgba(53,194,168,.16); color: var(--mint-500); }
+  .showcase h2 { font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -.015em; margin: 18px 0 12px; max-width: 520px; }
+  .showcase h2 em { font-style: normal; color: var(--mint-500); }
+  .showcase p { margin: 0; max-width: 460px; color: rgba(255,255,255,.7); font-size: 15px; line-height: 1.6; }
+
+  .features { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .features span {
+    font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.85);
+  }
+
+  /* Mini dashboard preview built from the dashboard's own components */
+  .preview {
+    margin-top: auto; padding-top: 40px;
+    display: grid; gap: 12px; grid-template-columns: 1fr 1fr;
+    transform: translateY(24px);
+  }
+  .p-card {
+    background: var(--surface); color: var(--ink); border-radius: 14px; padding: 16px 18px;
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,.5);
+  }
+  .p-label { display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--ink-2); }
+  .chip { font-size: 9px; font-weight: 800; letter-spacing: .06em; padding: 3px 7px; border-radius: 6px; }
+  .chip.blue { background: #e7effb; color: #3f6fb5; }
+  .chip.live { background: var(--mint-100); color: var(--teal-label); }
+  .chip.amber { background: #fdf1dc; color: #b7791f; }
+  .p-value { font-size: 26px; font-weight: 700; margin-top: 8px; }
+  .p-sub { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+
+  .p-chair {
+    grid-column: 1 / -1;
+    background: var(--forest-800); color: #fff; border: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .p-chair .chip { background: var(--mint-500); color: var(--forest-900); }
+  .p-chair .name { font-size: 18px; font-weight: 700; margin: 8px 0 4px; }
+  .p-chair .meta { font-size: 12px; color: rgba(255,255,255,.65); }
+  .p-chair .tags { display: flex; gap: 6px; margin-top: 10px; }
+  .p-chair .tags span { font-size: 9px; font-weight: 800; letter-spacing: .05em; padding: 4px 8px; border-radius: 6px; }
+  .tag-red { background: #c94b45; } .tag-amber { background: #a87a12; }
+  .timer { text-align: right; }
+  .timer b { display: block; font-size: 28px; color: var(--mint-500); font-variant-numeric: tabular-nums; }
+  .timer small { font-size: 10px; letter-spacing: .14em; color: rgba(255,255,255,.55); font-weight: 700; }
+
+  .p-schedule { grid-column: 1 / -1; padding: 6px 0 24px; border-radius: 14px 14px 0 0; }
+  .p-schedule h4 { margin: 10px 18px 6px; font-size: 14px; }
+  .slot { display: grid; grid-template-columns: 48px 30px 1fr auto; align-items: center; gap: 10px; padding: 9px 18px; border-top: 1px solid var(--border); font-size: 12px; }
+  .slot.current { background: var(--mint-100); }
+  .slot time { color: var(--ink-2); font-weight: 600; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; background: var(--canvas); color: var(--ink-2); }
+  .slot.current .avatar { background: var(--forest-800); color: #fff; }
+  .slot strong { display: block; font-size: 12px; }
+  .slot .proc { color: var(--ink-3); font-size: 11px; }
+  .status { font-size: 9px; font-weight: 800; letter-spacing: .06em; padding: 4px 8px; border-radius: 999px; background: var(--canvas); color: var(--ink-2); }
+  .status.in { background: var(--mint-500); color: var(--forest-900); }
+  .status.arr { background: #e7effb; color: #3f6fb5; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1080px) {
+    .showcase { padding: 44px 40px 0; }
+    .showcase h2 { font-size: 28px; }
+  }
+  @media (max-width: 900px) {
+    .page { grid-template-columns: 1fr; }
+    .showcase { display: none; }
+    .form-side { padding: 24px 16px; background: var(--canvas); }
+    .form-card { background: var(--surface); padding: 28px 22px; border-radius: 16px; border: 1px solid var(--border); }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="form-side">
+    <a class="brand" href="#" aria-label="OraLux Clinical home">
+      <span class="brand-mark">O</span>
+      <span>
+        <div class="brand-name">OraLux</div>
+        <div class="brand-sub">CLINICAL</div>
+      </span>
+    </a>
+
+    <div class="form-wrap">
+      <div class="form-card">
+        <span class="eyebrow">Clinic portal</span>
+        <h1>Sign in to OraLux</h1>
+        <p class="lede">Welcome back! Enter your credentials to open today's schedule.</p>
+
+        <div class="alert" id="alert" role="alert"></div>
+
+        <form id="login-form" novalidate>
+          <div class="field" id="f-username">
+            <label for="username">Username</label>
+            <div class="input">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter your username" required>
+            </div>
+            <div class="error">Please enter your username.</div>
+          </div>
+
+          <div class="field" id="f-password">
+            <label for="password">Password</label>
+            <div class="input">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+              <button type="button" class="toggle-pw" id="toggle-pw" aria-controls="password" aria-pressed="false">Show</button>
+            </div>
+            <div class="error">Please enter your password.</div>
+          </div>
+
+          <div class="row">
+            <label class="check"><input type="checkbox" name="remember"> Keep me signed in</label>
+            <a class="link" href="#">Forgot password?</a>
+          </div>
+
+          <button class="btn btn-primary" type="submit" id="submit">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="label">Sign in</span>
+          </button>
+        </form>
+
+        <p class="help">Having trouble? <a class="link" href="#">Contact your clinic admin</a></p>
+      </div>
+    </div>
+
+    <footer class="form-foot">
+      <span>© 2026 OraLux Dental System</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </footer>
+  </section>
+
+  <aside class="showcase" aria-hidden="true">
+    <span class="eyebrow">Built for dental teams</span>
+    <h2>Your whole day in the chair, <em>one screen away.</em></h2>
+    <p>Schedules, charting, treatment plans and lab cases in one place, so you spend less time clicking and more time with patients.</p>
+    <div class="features">
+      <span>Live chair status</span><span>Clinical notes</span><span>Lab case tracking</span><span>Production reports</span>
+    </div>
+
+    <div class="preview">
+      <div class="p-card">
+        <div class="p-label">APPOINTMENTS TODAY <span class="chip blue">ON TIME</span></div>
+        <div class="p-value">12</div>
+        <div class="p-sub">3 completed · 1 in chair · 8 to go</div>
+      </div>
+      <div class="p-card">
+        <div class="p-label">PRODUCTION TODAY <span class="chip live">+12%</span></div>
+        <div class="p-value">PHP 48,200</div>
+        <div class="p-sub">vs your Tuesday average</div>
+      </div>
+
+      <div class="p-card p-chair">
+        <div>
+          <span class="chip">IN CHAIR</span>
+          <div class="name">Ana Cruz · 34 F · #PT-10482</div>
+          <div class="meta">Composite restoration 36 O · Plan phase 1 of 3</div>
+          <div class="tags"><span class="tag-red">ALLERGY · PENICILLIN</span><span class="tag-amber">ANTICOAGULANT</span></div>
+        </div>
+        <div class="timer"><b>14:06</b><small>ELAPSED</small></div>
+      </div>
+
+      <div class="p-card p-schedule">
+        <h4>Today's schedule</h4>
+        <div class="slot"><time>9:45</time><span class="avatar">LS</span><span><strong>Liza Santos</strong><span class="proc">Crown prep 46</span></span><span class="status">COMPLETED</span></div>
+        <div class="slot current"><time>10:30</time><span class="avatar">AC</span><span><strong>Ana Cruz</strong><span class="proc">Composite restoration 36 O</span></span><span class="status in">IN CHAIR</span></div>
+        <div class="slot"><time>11:15</time><span class="avatar">RM</span><span><strong>Ramon Mendoza</strong><span class="proc">Endo re-eval 25</span></span><span class="status arr">ARRIVED</span></div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script>
+  const form = document.getElementById('login-form');
+  const alertBox = document.getElementById('alert');
+  const submit = document.getElementById('submit');
+  const pw = document.getElementById('password');
+  const toggle = document.getElementById('toggle-pw');
+
+  toggle.addEventListener('click', () => {
+    const show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-pressed', String(show));
+  });
+
+  function setError(id, on) {
+    const field = document.getElementById(id);
+    field.classList.toggle('has-error', on);
+    field.querySelector('.input').classList.toggle('invalid', on);
+    field.querySelector('input').setAttribute('aria-invalid', String(on));
+  }
+
+  ['username', 'password'].forEach(name => {
+    document.getElementById(name).addEventListener('input', () => setError('f-' + name, false));
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alertBox.classList.remove('show');
+    const user = form.username.value.trim();
+    const pass = form.password.value;
+    setError('f-username', !user);
+    setError('f-password', !pass);
+    if (!user || !pass) return;
+
+    submit.disabled = true;
+    submit.classList.add('loading');
+    submit.querySelector('.label').textContent = 'Signing in…';
+
+    // TODO: replace with the real authentication request.
+    await new Promise(r => setTimeout(r, 900));
+
+    submit.disabled = false;
+    submit.classList.remove('loading');
+    submit.querySelector('.label').textContent = 'Sign in';
+    alertBox.textContent = 'Demo only: connect this form to your auth endpoint.';
+    alertBox.classList.add('show');
+  });
+</script>
+</body>
+</html>
